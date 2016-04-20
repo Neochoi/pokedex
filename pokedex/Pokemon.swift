@@ -23,8 +23,75 @@ class Pokemon{
     private var _nextEvolutionLvl:String!
     private var _pokemonUrl:String!
     
-
     
+    var description: String{
+        if _description == nil{
+            _description = "?"
+            print("I have no value")
+        }
+        return self._description
+    }
+    
+    var type: String{
+        if _type == nil{
+            _type = "?"
+        }
+        return _type
+    }
+    
+    var defense: String{
+        if _defense == nil{
+            _defense = "?"
+        }
+        return _defense
+    }
+    
+    var height: String{
+        if _height == nil{
+            _height = "?"
+        }
+        return _height
+    }
+    
+    var weight: String{
+        if _weight == nil{
+            _weight = "?"
+        }
+        return _weight
+    }
+    
+    var attack: String{
+        if _attack == nil{
+            _attack = "?"
+        }
+        return _attack
+    }
+    
+    var nextEvolutionId: String{
+        if _nextEvolutionId == nil{
+            _nextEvolutionId = "?"
+            
+        }
+        return _nextEvolutionId
+    }
+    
+    var nextEvolutionTxt: String{
+        if _nextEvolutionTxt == nil{
+            _nextEvolutionTxt = "?"
+        }
+        return _nextEvolutionTxt
+    }
+    
+    var nextEvolutionLvl: String{
+        
+        get{
+            
+                if _nextEvolutionLvl == nil{
+                    _nextEvolutionLvl = ""
+                }
+                return _nextEvolutionLvl
+            }
+        }
     var name:String{
         return _name
     }
@@ -69,16 +136,19 @@ class Pokemon{
                                 self._nextEvolutionId = num
                                 self._nextEvolutionTxt = to
                                 
-                            }
-                        }
-                        
-                        if let lvl = evolutions[0]["level"] as? Int{
+                            if let lvl = evolutions[0]["level"] as? Int{
+                            
                             self._nextEvolutionLvl = "\(lvl)"
+                            
+                                }
+                            
+                            }
+                        print(self._nextEvolutionId)
+                        print(self._nextEvolutionTxt)
+                        print(self._nextEvolutionLvl)
                         }
                         
-                        print(self._nextEvolutionLvl)
-                        print(self._nextEvolutionTxt)
-                        print(self._nextEvolutionId)
+                        
                     }
                 }
                 
@@ -86,8 +156,7 @@ class Pokemon{
                     where descArr.count > 0{
                     if let url = descArr[0]["resource_uri"]{
                         let nsurl = NSURL(string: "\(URL_BASE)\(url)")!
-                        Alamofire.request(.GET, nsurl).responseJSON{
-                            response in
+                        Alamofire.request(.GET, nsurl).responseJSON{response in
                             let desResult = response.result
                             if let descDict = desResult.value as? Dictionary<String,AnyObject>{
                                 if let description = descDict["description"] as? String{
@@ -97,7 +166,7 @@ class Pokemon{
                                     self._description = ""
                                 }
                             }
-                            
+                            completed()
                         }
                         
 
@@ -147,7 +216,7 @@ class Pokemon{
             }
 
         }
-        completed()
+        
         
     }
 }

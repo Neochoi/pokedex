@@ -21,6 +21,7 @@ class PokemonDetailVC: UIViewController {
     @IBOutlet weak var pokedexLbl: UILabel!
     @IBOutlet weak var weightLbl: UILabel!
     @IBOutlet weak var evoLbl: UILabel!
+    @IBOutlet weak var baseAttack: UILabel!
     
     
     var pokemon: Pokemon!
@@ -29,17 +30,43 @@ class PokemonDetailVC: UIViewController {
         super.viewDidLoad()
 
         nameLbl.text = pokemon.name
-        mainImg.image = UIImage(named: "\(pokemon.pokedexId)")
+        let img = UIImage(named: "\(pokemon.pokedexId)")
+        mainImg.image = img
+        currentEvoImg.image = img
         pokemon.downloadPokemonDetails{() -> () in
-            
-            //this will be called after download is done
+            self.updataUI()//this will be called after download is done
+        }
+    }
+    
+    func updataUI(){
+        descriptionLbl.text = pokemon.description
+        typeLbl.text = pokemon.type
+        defenseLbl.text = pokemon.defense
+        pokedexLbl.text = "\(pokemon.pokedexId)"
+        weightLbl.text = pokemon.weight
+        heightLbl.text = pokemon.height
+        baseAttack.text = pokemon.attack
         
+        if pokemon.nextEvolutionId  == "?"{
+            
+            evoLbl.text = "No Evolutions"
+            nextEvoImg.hidden = true
+        }
+        else{
+            nextEvoImg.hidden = false
+            nextEvoImg.image = UIImage(named: pokemon.nextEvolutionId)
+            var str = "Next Evolution: \(pokemon.nextEvolutionTxt)"
+            
+                    if pokemon.nextEvolutionLvl != ""{
+            str += " - LVL \(pokemon.nextEvolutionLvl)"
+                    evoLbl.text = str
+                        
+            }
         }
         
-       
-        
-        
+
     }
+    
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
